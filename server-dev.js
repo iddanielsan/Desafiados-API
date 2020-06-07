@@ -13,7 +13,7 @@
 |     Same can be done by chaining `loadCommands()` method after
 |
 | """ Preloading files """
-|     Also you can preload files by calling `preLoad('path/to/file')` method.
+|     Also you can preload files by calling `preLoad('path/to/file')` method.d
 |     Make sure to pass a relative path from the project root.
 */
 const cluster = require('cluster')
