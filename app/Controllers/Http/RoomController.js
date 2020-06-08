@@ -10,7 +10,7 @@ class RoomController {
     try {
       const room_code = params.code
 
-      const get_room = await Room.where({
+      const get_room = await Room.with('users').where({
         room_code: room_code
       }).select('room_title','room_category','room_difficulty','room_type').first()
 
