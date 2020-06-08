@@ -18,3 +18,8 @@ const Route = use('Route')
 
 Route.post('/room', 'RoomController.Create').validator('RoomCreate')
 Route.get('/room', 'RoomController.List')
+Route.post('/room/:code', 'RoomController.EnterRoom')
+
+Route.group(() => {
+  Route.get('/room', 'RoomController.GetData')
+}).prefix('v1').middleware(['auth:jwt'])

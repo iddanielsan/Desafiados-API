@@ -6,6 +6,59 @@ const md5 = use('crypto')
 const User = use('App/Models/User')
 
 class RoomController {
+  async GetData ({ response, request, auth }) {
+    try {
+      const user = await auth.getUser()
+
+      const get_room = await Room.with('users').where({
+        _id: user.room_id
+      }).select(
+        'room_code',
+        'room_category',
+        'room_difficulty',
+        'room_started',
+        'room_title',
+        'room_goal',
+        'room_round',
+        'room_type',
+        'created_at'
+      ).fetch()
+
+      response.status(200).send(get_room)
+    } catch(e) {
+      response.status(500).send({ error: 'E_SERVER_ERROR' })
+    }
+  }
+
+  async EnterRoom ({ response, request, auth, params }) {
+    try {
+      const room_code = params.code
+      const { username } = request.body
+
+      const room_count = await Room.where({
+        room_code: room_code
+      }).first()
+
+      if (!room_count) {
+        response.status(404).send({ error: 'E_ROOM_NOT_FOUND' })
+      } else {
+        const CreateUser = await User.create({
+          username: username,
+          room_id: room_count._id,
+          status: 'waiting_for_next_round',
+          is_admin: false,
+          points: 0
+        })
+
+        const token = await auth.generate(CreateUser)
+
+        response.status(201).send({ login: token })
+      }
+    } catch(e) {
+      response.status(500).send({ error: 'E_SERVER_ERROR' })
+    }
+  }
+
   async List ({ response, request }) {
     try {
       const users = await Room.with('users').where({
