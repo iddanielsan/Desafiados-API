@@ -6,7 +6,7 @@ const md5 = use('crypto')
 const User = use('App/Models/User')
 
 class RoomController {
-  async GetPublicData ({ response, request }) {
+  async GetPublicData ({ response, request, params }) {
     try {
       const room_code = params.code
 
