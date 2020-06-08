@@ -6,6 +6,27 @@ const md5 = use('crypto')
 const User = use('App/Models/User')
 
 class RoomController {
+  async List ({ response, request }) {
+    try {
+      const users = await Room.with('users').where({
+        room_is_private: false
+      }).select(
+        'room_code',
+        'room_category',
+        'room_difficulty',
+        'room_started',
+        'room_title',
+        'room_goal',
+        'room_type',
+        'created_at'
+      ).fetch()
+
+      response.status(200).send(users)
+    } catch(e) {
+      response.status(500).send({ error: 'E_SERVER_ERROR' })
+    }
+  }
+
   async Create ({ response, request, auth }) {
     try {
       const { difficulty, type, category, goal, room_title, room_username, is_private } = request.body
@@ -29,6 +50,7 @@ class RoomController {
         }
       })
 
+      // Cria a sala
       const CreateRoom = await Room.create({
         room_code: Math.random().toString(36).substr(2, 5).toUpperCase(),
         room_title: room_title,
@@ -43,12 +65,14 @@ class RoomController {
         room_is_private: is_private
       })
 
+      // Cria o usuário o insere dentro da sala
       const CreateUser = await User.create({
         username: room_username,
         room_id: CreateRoom._id,
         points: 0
       })
 
+      // Gera o token JWT de login
       const token = await auth.generate(CreateUser)
 
       response.status(201).send({

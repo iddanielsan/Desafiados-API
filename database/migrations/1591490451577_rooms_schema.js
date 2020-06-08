@@ -8,6 +8,7 @@ class RoomsSchema extends Schema {
     this.create('rooms', (collection) => {
       collection.index('room_code_index', {room_code: 1})
       collection.index('room_title_index', {room_title: 1})
+      collection.index('room_is_private_index', {room_is_private: 1})
     })
   }
 

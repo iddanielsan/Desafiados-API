@@ -17,3 +17,4 @@
 const Route = use('Route')
 
 Route.post('/room', 'RoomController.Create').validator('RoomCreate')
+Route.get('/room', 'RoomController.List')
