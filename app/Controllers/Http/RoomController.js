@@ -60,7 +60,7 @@ class RoomController {
         room_category: category,
         room_difficulty: difficulty,
         room_type: type,
-        room_progress: `0/${goal}`,
+        room_round: 0,
         room_questions: questions.data.results,
         room_started: false,
         room_is_private: is_private
@@ -70,6 +70,8 @@ class RoomController {
       const CreateUser = await User.create({
         username: room_username,
         room_id: CreateRoom._id,
+        status: 'waiting_to_start',
+        is_admin: true,
         points: 0
       })
 
