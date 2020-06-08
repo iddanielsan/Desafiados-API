@@ -18,6 +18,11 @@ const Route = use('Route')
 
 Route.post('/room', 'RoomController.Create').validator('RoomCreate')
 Route.get('/room', 'RoomController.List')
+
+// Get public info about specifc room
+Route.get('/room/:code', 'RoomController.GetPublicData')
+
+// Enter in a room
 Route.post('/room/:code', 'RoomController.EnterRoom')
 
 Route.group(() => {

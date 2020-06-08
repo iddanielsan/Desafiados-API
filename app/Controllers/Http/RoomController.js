@@ -6,6 +6,23 @@ const md5 = use('crypto')
 const User = use('App/Models/User')
 
 class RoomController {
+  async GetPublicData ({ response, request }) {
+    try {
+      const room_code = params.code
+
+      const get_room = await Room.where({
+        room_code: room_code
+      }).select('room_title','room_category','room_difficulty','room_type').first()
+
+      if (!get_room) {
+        response.status(404).send({ error: 'E_ROOM_NOT_FOUND' })
+      } else {
+        response.status(200).send({ get_room })
+      }
+    } catch(e) {
+      response.status(500).send({ error: 'E_SERVER_ERROR' })
+    }
+  }
   async GetData ({ response, request, auth }) {
     try {
       const user = await auth.getUser()
