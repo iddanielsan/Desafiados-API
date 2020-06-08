@@ -60,6 +60,7 @@ class RoomController {
         room_category: category,
         room_difficulty: difficulty,
         room_type: type,
+        room_progress: `0/${goal}`,
         room_questions: questions.data.results,
         room_started: false,
         room_is_private: is_private
