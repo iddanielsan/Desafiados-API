@@ -39,7 +39,7 @@ class RoomController {
         'room_round',
         'room_type',
         'created_at'
-      ).fetch()
+      ).first()
 
       response.status(200).send(get_room)
     } catch(e) {
