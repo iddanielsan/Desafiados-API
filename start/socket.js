@@ -15,6 +15,8 @@
 
 const Ws = use('Ws')
 
+Ws.channel('processor:*', 'GameProcessorController').middleware(['auth:jwt'])
+
 // Ws.channel('chat', ({ socket }) => {
 //   console.log('user joined with %s socket id', socket.id)
 // })

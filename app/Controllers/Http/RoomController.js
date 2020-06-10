@@ -36,11 +36,13 @@ class RoomController {
         'room_started',
         'room_title',
         'room_goal',
+        'room_channel',
         'room_round',
         'room_type',
         'created_at'
       ).first()
 
+      get_room['me'] = user
       response.status(200).send(get_room)
     } catch(e) {
       response.status(500).send({ error: 'E_SERVER_ERROR' })
@@ -64,7 +66,8 @@ class RoomController {
           room_id: room_count._id,
           status: 'waiting_for_next_round',
           is_admin: false,
-          points: 0
+          points: 0,
+          socket_id: null
         })
 
         const token = await auth.generate(CreateUser)
@@ -142,7 +145,8 @@ class RoomController {
         room_id: CreateRoom._id,
         status: 'waiting_to_start',
         is_admin: true,
-        points: 0
+        points: 0,
+        socket_id: null
       })
 
       // Gera o token JWT de login
